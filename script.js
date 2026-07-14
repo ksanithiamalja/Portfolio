@@ -602,25 +602,46 @@ function initContactForm() {
     const successAlert = document.getElementById('form-success-alert');
     const submitBtn = document.getElementById('btn-submit-form');
 
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async (e) => {
         e.preventDefault();
-        
-        // Show button loading state
+
         submitBtn.disabled = true;
         submitBtn.textContent = 'Sending Message...';
 
-        // Simulate network API post call (since it's a static build)
-        //setTimeout(() => {
-            // Show Success Overlay Panel
-            //successAlert.classList.add('show');
-            form.reset();
-            
-            // Auto hide success overlay after 4 seconds and restore form access
-            setTimeout(() => {
-                successAlert.classList.remove('show');
+        const formData = new FormData(form);
+
+        try {
+            const response = await fetch(form.action, {
+                method: "POST",
+                body: formData,
+                headers: {
+                    "Accept": "application/json"
+                }
+            });
+
+            if (response.ok) {
+
+                successAlert.classList.add('show');
+
+                form.reset();
+
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'Send Message';
-            }, 4000);
-        }, 1200);
+
+                setTimeout(() => {
+                    successAlert.classList.remove('show');
+                }, 4000);
+
+            } else {
+                throw new Error("Form submission failed");
+            }
+
+        } catch (error) {
+
+            alert("Message failed to send. Please try again.");
+
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Send Message';
+        }
     });
-}
+} 
