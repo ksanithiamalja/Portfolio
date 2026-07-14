@@ -610,9 +610,9 @@ function initContactForm() {
         submitBtn.textContent = 'Sending Message...';
 
         // Simulate network API post call (since it's a static build)
-        setTimeout(() => {
+        //setTimeout(() => {
             // Show Success Overlay Panel
-            successAlert.classList.add('show');
+            //successAlert.classList.add('show');
             form.reset();
             
             // Auto hide success overlay after 4 seconds and restore form access
